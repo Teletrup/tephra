@@ -24,7 +24,12 @@ void __xxd(char* base, int start, int num) {
 
 void xxd(char* base, int len, int offset) {
 	char line_buf[17];
-	for (line_pos = offset; line_pos+offset
+	int idx = offset;
+	while (idx < len) {
+		printf("%08X: ", idx)
+		for (int i; i<16; i++) {
+			
+	}
 
 }
 
