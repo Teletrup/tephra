@@ -1,36 +1,42 @@
 #include <stdio.h>
 #define MEM_SZ 1024
 
-#define HEAD *mem[0]
+#define HEAD mem[0]
+
+#define MIN(a, b) (a) < (b) ? (a) : (b)
+
 
 char in_buf[64];
-char mem[MEM_SZ];
+unsigned char mem[MEM_SZ];
 
 
-//pi
-void __xxd(char* base, int start, int num) {
-	char* ptr = base + start;
-	for (int i=0; i<num; i++) {
-		if (i % 16 == 0)
-			printf("%08x: ", i);
-		if (i % 2)
-			printf("%02x ", ptr[i]);
-		else
-			printf("%02X", ptr[i]);
-		if (i % 16 == 15)
-			printf("\n");
+void xxd(unsigned char* base, int len, int offset) {
+	unsigned char ascii_buf[17];
+	int max_addr = len + offset;
+	for (int i=offset; i<max_addr; i+=16) {
+		printf("%08X: ", i);
+		int line_len = MIN(16, max_addr - i); //ob1?
+		ascii_buf[line_len] = 0;
+		int j;
+		for (j=0; j<line_len; j++) {
+			unsigned char chr = base[i + j];
+			printf("%02X", chr);
+			if (j % 2)
+				putchar(' ');
+			if (chr >= ' ' && chr <= '~')
+				ascii_buf[j] = chr;
+			else
+				ascii_buf[j] = '.';
+		}
+		int padding_len = (16 - line_len) * 2 + (16 - line_len + 1) / 2;
+		char padding_buf[32];
+		padding_buf[padding_len] = 0;
+		for (int i=0; i<padding_len; i++)
+			padding_buf[i] = ' ';
+		printf(padding_buf);
+		printf(ascii_buf);
+		putchar('\n');
 	}
-}
-
-void xxd(char* base, int len, int offset) {
-	char line_buf[17];
-	int idx = offset;
-	while (idx < len) {
-		printf("%08X: ", idx)
-		for (int i; i<16; i++) {
-			
-	}
-
 }
 
 int main() {
@@ -39,5 +45,6 @@ int main() {
 		mem[i] = 'A';
 	}
 #endif
-	xxd(mem, 0, 32);
+	HEAD = 128;
+	xxd(mem, 99, 1);
 }
