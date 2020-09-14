@@ -11,7 +11,7 @@ unsigned char mem[MEM_SZ];
 
 
 void xxd(unsigned char* base, int len, int offset) {
-	unsigned char ascii_buf[17];
+	char ascii_buf[17];
 	int max_addr = len + offset;
 	for (int i=offset; i<max_addr; i+=16) {
 		printf("%08X: ", i);
@@ -28,8 +28,8 @@ void xxd(unsigned char* base, int len, int offset) {
 			else
 				ascii_buf[j] = '.';
 		}
-		int padding_len = (16 - line_len) * 2 + (16 - line_len + 1) / 2;
-		char padding_buf[32];
+		int padding_len = (16 - line_len) * 2 + (16 - line_len + 1) / 2; //+1?
+		char padding_buf[39];
 		padding_buf[padding_len] = 0;
 		for (int i=0; i<padding_len; i++)
 			padding_buf[i] = ' ';
@@ -46,5 +46,5 @@ int main() {
 	}
 #endif
 	HEAD = 128;
-	xxd(mem, 99, 1);
+	xxd(mem, 17, 0);
 }
