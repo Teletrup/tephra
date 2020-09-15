@@ -172,3 +172,43 @@ todo
 	meta semantics & syntax
 	scoping
 	typing
+		variable len types
+	wraped and raw stacks
+
+main loop should only execute sequential instructions
+
+mapping:
+	buffers
+	stacks
+	defs
+		atomics
+			read
+			write
+			ariths
+
+		composites
+
+next & exit in forth
+
+stack related atomics will be implemented in C ???
+
+branch
+	atomic
+		cond with cmp and fl
+	write to pc
+		sucks, because needs cond which still uses atomic branching
+
+is0:
+	ldr
+	str
+	jmp
+	jnz
+
+
+every instruction possibly conditional?
+	fast?
+cond instruction? //move to duds
+	more consistent with typing
+		???
+		each instruction which is influenced by stack acts like a procedure
+	sucks because it's bnz but retarded

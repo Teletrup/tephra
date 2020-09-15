@@ -1,7 +1,10 @@
 #include <stdio.h>
-#define MEM_SZ 1024
+
+#define MEM_SZ 512
+#define IN_BUF_SZ 64
 
 #define HEAD mem[0]
+#define IN_BUF mem + MEM_SZ - IN_BUF_SZ
 
 #define MIN(a, b) (a) < (b) ? (a) : (b)
 
@@ -28,7 +31,7 @@ void xxd(unsigned char* base, int len, int offset) {
 			else
 				ascii_buf[j] = '.';
 		}
-		int padding_len = (16 - line_len) * 2 + (16 - line_len + 1) / 2; //+1?
+		int padding_len = (16 - line_len) * 2 + (16 - line_len + 1) / 2 + 1; //+1?
 		char padding_buf[39];
 		padding_buf[padding_len] = 0;
 		for (int i=0; i<padding_len; i++)
@@ -46,5 +49,8 @@ int main() {
 	}
 #endif
 	HEAD = 128;
-	xxd(mem, 17, 0);
+	while (1) {
+		xxd(mem, MEM_SZ, 0);
+		fgets(IN_BUF, IN_BUF_SZ, stdin);
+	}
 }
