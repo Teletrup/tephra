@@ -175,8 +175,6 @@ todo
 		variable len types
 	wraped and raw stacks
 
-main loop should only execute sequential instructions
-
 mapping:
 	buffers
 	stacks
@@ -192,23 +190,56 @@ next & exit in forth
 
 stack related atomics will be implemented in C ???
 
-branch
-	atomic
-		cond with cmp and fl
-	write to pc
-		sucks, because needs cond which still uses atomic branching
 
-is0:
+- is0:
 	ldr
 	str
 	jmp
 	jnz
 
+- is1:
+	ldr
+	ldrc
+	str
+	strc
 
-every instruction possibly conditional?
-	fast?
-cond instruction? //move to duds
-	more consistent with typing
-		???
-		each instruction which is influenced by stack acts like a procedure
-	sucks because it's bnz but retarded
+
+branch
+	- atomic
+		jnz with cmp
+	- write to pc
+		sucks, because needs cond which still uses atomic branching
+	- every instruction possibly conditional?
+		fast?
+	- cond instruction? //move to duds
+		more consistent with typing ???
+			each instruction which is influenced by stack acts like a procedure
+		sucks because it's jnz but retarded
+
+jnz as a macro
+
+problem of literals
+	- jump separated data fragments
+	- multibyte instructions
+	- literals stored on the stack <<<WACKY (OR SHIT?)
+
+problem of IO
+	- special instructions
+		inp
+		out
+	- async?
+		smells like broken state
+	- interrupt?
+
+better xxd:
+	what?
+		color bytes according to addr/val
+	how?
+		- auxillary color buffer
+		- format callback
+
+==================================================
+
+main loop
+	executes instruction pointed by cell 0
+	increments cell 0
