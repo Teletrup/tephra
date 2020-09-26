@@ -196,6 +196,7 @@ stack related atomics will be implemented in C ???
 	str
 	jmp
 	jnz
+	lit
 
 - is1:
 	ldr
@@ -221,7 +222,7 @@ jnz as a macro
 problem of literals
 	- jump separated data fragments
 	- multibyte instructions
-	- literals stored on the stack <<<WACKY (OR SHIT?)
+	- literals stored on the stack <<<WACKY (OR SHIT?) (OR UNWIELDY) (OR IMPOSSIBLE?)
 
 problem of IO
 	- special instructions
@@ -237,6 +238,34 @@ better xxd:
 	how?
 		- auxillary color buffer
 		- format callback
+
+instruction size
+	- 1
+		255 instructions is more than enough
+	- 2
+		allows wacky literals
+
+wacky literals:
+	if MSB of an opcode is 1, it gets pushed on the stack
+
+todo:
+	sb
+	st
+	sf?
+
+type fucking theory
+lisp
+
+storing all levels
+	src, meta, raw
+	skimming
+
+flags
+
+stack manipulation opcodes?
+	loc?
+	pick?
+		not needed
 
 ==================================================
 

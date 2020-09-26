@@ -1,18 +1,7 @@
 #include <stdio.h>
 #include "colors.h"
-
-#define MEM_SZ 512
-#define IN_BUF_SZ 64
-
-#define PC_ADDR 0
-#define PC_VAL ((short*) mem + PC_ADDR)[0]
-#define IN_BUF MEM_SZ - IN_BUF_SZ
-
-#define MIN(a, b) (a) < (b) ? (a) : (b)
-
-
-char in_buf[64];
-unsigned char mem[MEM_SZ];
+#include "opcodes.h"
+#include "mem.h"
 
 
 char* getByteForm(int addr, char val) {
@@ -60,9 +49,9 @@ int main() {
 	PC_VAL = 257;
 	while (1) {
 		printf(CLEAR);
-		xxd(mem, MEM_SZ, 0, getByteForm);
+		xxd(mem_g, MEM_SZ, 0, getByteForm);
 		printf("\n");
-		fgets(mem + IN_BUF, IN_BUF_SZ, stdin);
+		fgets(mem_g + IN_BUF, IN_BUF_SZ, stdin);
 		PC_VAL++;
 	}
 }
