@@ -266,9 +266,15 @@ stack manipulation opcodes?
 	loc?
 	pick?
 		not needed
+	neither?
 
-==================================================
+ldr with offset?
 
-main loop
-	executes instruction pointed by cell 0
-	increments cell 0
+which arg is lit?
+	top
+
+opcode masks:
+	lit
+	cond
+	size
+	id

@@ -4,20 +4,35 @@
 #include "mem.h"
 
 
+unsigned char mem_g[MEM_SZ];
+
+
 char* getByteForm(int addr, char val) {
 	if (addr == PC_ADDR || addr == PC_ADDR + 1)
 		return FG_RED BG_BLACK BYTE_FORM COLOR_RESET;
-	if (addr == PC_VAL || addr == PC_VAL + 1)
+	if (addr == SF_ADDR || addr == SF_ADDR + 1)
+		return FG_CYAN BG_BLACK BYTE_FORM COLOR_RESET;
+	if (addr == SP_ADDR || addr == SP_ADDR + 1)
+		return FG_GREEN BG_BLACK BYTE_FORM COLOR_RESET;
+
+	if (addr == PC_VAL)
 		return FG_BLACK BG_RED BYTE_FORM COLOR_RESET;
-	if (addr >= IN_BUF)
+	if (addr == SP_VAL || addr == SP_VAL + 1)
+		return FG_BLACK BG_GREEN BYTE_FORM COLOR_RESET;
+	if (addr == SF_VAL || addr == SF_VAL + 1)
+		return FG_BLACK BG_CYAN BYTE_FORM COLOR_RESET;
+
+	if (addr >= STACK && addr < STACK + STACK_SZ)
 		return FG_MAGENTA BG_BLACK BYTE_FORM COLOR_RESET;
+	if (addr >= IN_BUF && addr < IN_BUF + IN_BUF_SZ)
+		return FG_YELLOW BG_BLACK BYTE_FORM COLOR_RESET;
 	//TODO coloring instructions
 	return BYTE_FORM;
 	//Should it output reset after every byte?
 	//Should I even benchmark it?
 }
 
-void xxd(unsigned char* base, int len, int offset, char* (*ffun) (int, char)) {
+void xxd(unsigned char* base, int len, int offset, char* (*form_fun) (int, char)) {
 	char ascii_buf[17];
 	int limit = len + offset;
 	for (int i=offset; i<limit; i+=16) {
@@ -27,7 +42,7 @@ void xxd(unsigned char* base, int len, int offset, char* (*ffun) (int, char)) {
 		int j;
 		for (j=0; j<line_len; j++) {
 			unsigned char chr = base[i + j];
-			printf(ffun(i + j, chr), chr);
+			printf(form_fun(i + j, chr), chr);
 			if (j % 2)
 				putchar(' ');
 			if (chr >= ' ' && chr <= '~')
@@ -46,7 +61,8 @@ void xxd(unsigned char* base, int len, int offset, char* (*ffun) (int, char)) {
 }
 
 int main() {
-	PC_VAL = 257;
+	PC_VAL = 128;
+	SF_VAL = SP_VAL = STACK;
 	while (1) {
 		printf(CLEAR);
 		xxd(mem_g, MEM_SZ, 0, getByteForm);
